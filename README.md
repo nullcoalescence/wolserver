@@ -25,5 +25,10 @@ $ npm install -g pm2
 $ pm2 start ~/wolserver/server.py --name "wolserver" --interpreter "python3"
 ```
 
+You can now access the HTTP server on localhost:5000
+
 ## Send HTTP requests to devices
+@TODO
+
+## Config
 @TODO
