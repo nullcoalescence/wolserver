@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %} 
+
+    <h1>Wake up</h1>
+
+    <ul>
+    {% for device in devices: %}
+        <li> {{ device[1] }}: {{ device[2] }} <a href="/wake-up?id={{ device[0] }}">Wake up</a> </li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

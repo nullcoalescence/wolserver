@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %} 
+
+    <div class="subnav">
+        <a href="/settings">Settings</a>
+        <a href="/about">About</a>
+    </div>
+
+    <h1>Settings</h1>
+
+    <div>
+
+        <p>
+            <h3>UI</h3>
+            <label>Theme settings here ...</label>
+        </p>
+
+        <p>
+            <h3>Database</h3>
+            <label>Delete database? Warning: this will delete all registered devices and saved settings; and regenerate the database from schema.</label>
+            <br>
+            <a href="/delete-database">Delete database</a>
+        </p>
+
+    </div>
+
+{% endblock %}

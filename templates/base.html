@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>wolserver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+    <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/wake-up">Wake up device</a>
+        <a href="/add-device">Add device</a>
+        <a href="/remove-device">Remove device</a>
+        <a href="/settings">Settings</a>
+    </nav>
+
+    <div class="content">
+
+        {% for message in get_flashed_messages() %}
+            <div class="flashed-message">{{ message }}</div>
+        {% endfor %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %} 
+
+    <h1>Add device</h1>
+    
+    <form method="post">
+
+        <label for="display-name">Display name</label>
+        <br>
+        <input type="text" name="display-name" placeholder="My computer" maxlength="20" value="{{ request.form['display-name'] }}">
+
+        <br>
+
+        <label for="mac-address">Mac address</label>
+        <br>
+        <input type="text" name="mac-address" placeholder="A1-B2-C3-D4-E5-F6" maxlength="17" value="{{ request.form['mac-address'] }}">
+
+        <br>
+
+        <button type="submit">Ok</button>
+
+    </form>
+
+{% endblock %}
