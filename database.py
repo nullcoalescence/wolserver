@@ -1,6 +1,7 @@
 """
 database.py
 Handles database operations with a SQLITE database
+All validation is done in server.py, not here
 """
 
 import os

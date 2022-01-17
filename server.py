@@ -5,19 +5,19 @@ Main entry point of application. Contains routing logic
 """
 
 from flask import Flask
-from flask import render_template, request, url_for, flash, redirect, Response
+from flask import render_template, request, url_for, flash, redirect, Response, jsonify
 
 from dotenv import load_dotenv
 load_dotenv()
 
+import requests as rr
 import re
 
 from database import Database
+db = Database()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "7e1f71d83e92ac615a431ad30cb8b650e528af7b04092e2d"
-
-db = Database()
 
 """ Routing """
 
@@ -69,18 +69,20 @@ def addDevice():
 def removeDevice():
 
     # If a URL parameter is provided (id), we are deleting a device
-    id = str(request.args.get("id"))
-    if request.args.get(id):
+    if request.args.get("id"):
 
-        if str(db.isMacAddressInDB(id)):
+        # Send a POST to the endpoint
+        macAddress = request.args.get("id")
+ 
+        url = request.url_root + "/api/v1/remove-device?id=" + str(macAddress)
+        req = rr.post(url)
+        res = req.json()
 
-            # @TODO: validate data
-            
-            # @TODO send POST to backend
-
+        # Route based on response code from API
+        if res.get("responseCode") == 200:
             return render_template("remove_device__success.html")
         else:
-            return render_template("error.html", error="400 Bad Request.\nDevice with supplied ID (Mac Address) not in database.")
+            return render_template("error.html", error=res)
     
     # If no URL parameter is provided, we load the device list
     else:
@@ -93,22 +95,26 @@ def wakeUp():
 
     # If a URL parameter is provided (id), we are waking up a device
     if request.args.get("id"):
+        
         macAddress = request.args.get("id") # Device ID is mac address
 
         if db.isMacAddressInDB(macAddress):
-            print("Waking...")
-            # @TODO wake on lan magic packet
+            
+            url = request.url_root + "/api/v1/wake-up"
+            req = rr.post(url)
+            res = req.text
 
-            # @TODO send POST req to backend to wake device 
-            return render_template("device_wake__success.html")
+            return res
+            
         else:
-            # @TODO http error code
+            #@TODO http error code
             return render_template("error.html", error="400 Bad Request\nDevice with supplied ID (Mac Address) not in database.")
 
         # validate data
     # If no URL parameter is provided, we load the device list
     else:
         deviceList = db.getAllDevices()
+
         return render_template("device_list__wake_up.html", devices=deviceList)
 
 # Settings
@@ -126,3 +132,45 @@ def about():
 def deleteDatabase():
     db.initDB()
     return "Deleted DB"
+
+"""
+API Endpoints - These take POST requests, either sent over the network with local API key or through the application 
+"""
+# Wake a device up
+# Paramters:
+#   Mac Address
+@app.route("/api/v1/wake-up", methods=["POST"])
+def apiWake():
+    # @TODO implement wake on lan
+    # @TODO return http status code
+    # @TODO api key verification
+    return "POST API Response"
+
+# Removes a device from the database
+@app.route("/api/v1/remove-device", methods=["POST"])
+def apiRemove():
+
+    if request.args.get("id"):
+        deviceID = request.args.get("id")
+
+        if db.isMacAddressInDB(deviceID):
+            db.removeDevice(deviceID)
+        
+            return jsonify(
+                responseCode = 200
+            )
+
+        else:
+            return jsonify(
+                responseCode = 500,
+                errorMessage = "Mac address is not in database"
+            ) 
+    else:
+        return jsonify(
+            responseCode = 500,
+            errorMessage = "No 'id' provided. Add an ?id=MAC_ADDRESS parameter to the end of your URL"
+        )
+
+# Run app
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -3,10 +3,17 @@
 
     <h1>Remove device</h1>
 
+    {% if devices %}
+
     <ul>
     {% for device in devices: %}
         <li> {{ device[1] }}: {{ device[2] }} <a href="/remove-device?id={{ device[0] }}">Remove</a> </li>
     {% endfor %}
     </ul>
+
+    {% else %}
+    <p>There are no devices - add one <a href="/add-device">here</a>.</p>
+
+    {% endif %}
 
 {% endblock %}
