@@ -128,7 +128,7 @@ def about():
 @app.route("/delete-database")
 def deleteDatabase():
     db.initDB()
-    return "Deleted DB"
+    return render_template("delete_database__success.html")
 
 """
 API Endpoints - These take POST requests, either sent over the network with local API key or through the application 
