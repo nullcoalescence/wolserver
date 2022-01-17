@@ -78,7 +78,7 @@ def removeDevice():
         req = rr.post(url)
         res = req.json()
 
-        # Route based on response code from API
+        # Route based on API response
         if res.get("responseCode") == 200:
             return render_template("remove_device__success.html")
         else:
@@ -97,20 +97,17 @@ def wakeUp():
     if request.args.get("id"):
         
         macAddress = request.args.get("id") # Device ID is mac address
-
-        if db.isMacAddressInDB(macAddress):
             
-            url = request.url_root + "/api/v1/wake-up"
-            req = rr.post(url)
-            res = req.text
+        url = request.url_root + "/api/v1/wake-up?id=" + str(macAddress)
+        req = rr.post(url)
+        res = req.json()
 
-            return res
-            
+        # Route based on API response
+        if res.get("responseCode") == 200:
+            return render_template("device_wake__success.html")
         else:
-            #@TODO http error code
-            return render_template("error.html", error="400 Bad Request\nDevice with supplied ID (Mac Address) not in database.")
+           return render_template("error.html", error=res)    
 
-        # validate data
     # If no URL parameter is provided, we load the device list
     else:
         deviceList = db.getAllDevices()
@@ -141,10 +138,26 @@ API Endpoints - These take POST requests, either sent over the network with loca
 #   Mac Address
 @app.route("/api/v1/wake-up", methods=["POST"])
 def apiWake():
-    # @TODO implement wake on lan
-    # @TODO return http status code
-    # @TODO api key verification
-    return "POST API Response"
+    
+    if request.args.get("id"):
+        deviceID = request.args.get("id")
+
+        if db.isMacAddressInDB(deviceID):
+
+            # @TODO wake on lan
+            # @TODO wake on lan error handlign
+            return jsonify( responseCode = 200 )
+        
+        else:
+            return jsonify(
+                responseCode = 500,
+                errorMessage = "Mac address is not in database"
+            )
+    else:
+        return jsonify(
+                responseCode = 500,
+                errorMessage = "No 'id' provided. Add an ?id=MAC_ADDRESS parameter to the end of your URL"
+        )
 
 # Removes a device from the database
 @app.route("/api/v1/remove-device", methods=["POST"])
@@ -173,4 +186,8 @@ def apiRemove():
 
 # Run app
 if __name__ == "__main__":
+
+    # @TODO
+    # if (env.debug) then debug else, no debug
+
     app.run(debug=True)
