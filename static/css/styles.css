@@ -4,6 +4,8 @@
 *   Styles the frontend templates
 */
 
+/*
+
 body {
     font-family: "Arial", sans-serif;
 }
@@ -32,4 +34,11 @@ body a:hover {
     color: red;
     font-family: "Consolas", monospace;
     padding: 3px;
+}
+
+*/
+
+.content {
+    margin: 20px;
+    line-height: 1.4;
 }

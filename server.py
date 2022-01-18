@@ -41,7 +41,6 @@ def addDevice():
         elif len(displayName) > 20:
             flash("Display name must be 20 characters or less")
             
-        
         elif not macAddress:
             flash("Mac address required")
             
