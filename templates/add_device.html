@@ -3,22 +3,26 @@
 
     <h1>Add device</h1>
     
-    <form method="post">
+    <div class="form-group">
 
-        <label for="display-name">Display name</label>
-        <br>
-        <input type="text" name="display-name" placeholder="My computer" maxlength="20" value="{{ request.form['display-name'] }}">
+        <form method="post">
 
-        <br>
+            <label for="display-name">Display name</label>
+            <br>
+            <input class="form-control" type="text" name="display-name" placeholder="My computer" maxlength="20" value="{{ request.form['display-name'] }}">
+    
+            <br>
+    
+            <label for="mac-address">Mac address</label>
+            <br>
+            <input class="form-control col-xs-4" type="text" name="mac-address" placeholder="A1-B2-C3-D4-E5-F6" maxlength="17" value="{{ request.form['mac-address'] }}">
+    
+            <br>
+    
+            <button class="btn btn-primary" type="submit">Ok</button>
+    
+        </form>
 
-        <label for="mac-address">Mac address</label>
-        <br>
-        <input type="text" name="mac-address" placeholder="A1-B2-C3-D4-E5-F6" maxlength="17" value="{{ request.form['mac-address'] }}">
-
-        <br>
-
-        <button class="btn btn-primary" type="submit">Ok</button>
-
-    </form>
+    </div>
 
 {% endblock %}

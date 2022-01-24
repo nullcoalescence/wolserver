@@ -7,12 +7,13 @@
 
     <ul>
     {% for device in devices: %}
-        <li> {{ device[1] }}: {{ device[2] }} <a href="/remove-device?id={{ device[0] }}">Remove</a> </li>
+        <li> <strong>{{ device[1] }}</strong>: <code>{{ device[2] }}</code> <a class="btn btn-danger" href="/remove-device?id={{ device[0] }}">Remove</a> </li>
+        <br>
     {% endfor %}
     </ul>
 
     {% else %}
-    <p>There are no devices - add one <a href="/add-device">here</a>.</p>
+    <p>There are no devices - add one <a class="btn" href="/add-device">here</a>.</p>
 
     {% endif %}
 

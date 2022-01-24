@@ -7,7 +7,8 @@
 
     <ul>
     {% for device in devices: %}
-        <li> {{ device[1] }}: {{ device[2] }} <a href="/wake-up?id={{ device[0] }}">Wake up</a> </li>
+        <li> <strong>{{ device[1] }}</strong>: <code>{{ device[2] }}</code> <a class="btn btn-primary" href="/wake-up?id={{ device[0] }}">Wake up</a> </li>
+        <br>
     {% endfor %}
     </ul>
 
